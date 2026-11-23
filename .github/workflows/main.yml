@@ -1,0 +1,77 @@
+
+name: Build Vanturax Forms
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and Package Plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate Composer configuration
+        run: composer validate --no-check-publish
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+      - name: Check PHP syntax
+        run: |
+          find src -name "*.php" -print0 | xargs -0 -n1 php -l
+          php -l vanturax-forms.php
+          php -l uninstall.php
+
+      - name: Install JavaScript dependencies
+        run: npm install
+
+      - name: Run TypeScript check
+        run: npm run typecheck
+
+      - name: Build production assets
+        run: npm run build
+
+      - name: Verify required build files
+        run: |
+          test -f vendor/autoload.php
+          test -f assets/build/admin.js
+          test -f assets/build/admin.css
+
+      - name: Create installable ZIP
+        run: |
+          zip -r vanturax-forms-installable.zip . \
+            -x "./.git/*" \
+            -x "./.github/*" \
+            -x "./node_modules/*" \
+            -x "./vanturax-forms-installable.zip" \
+            -x "*/.DS_Store" \
+            -x "*/._*" \
+            -x "./__MACOSX/*"
+
+      - name: Upload installable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: vanturax-forms-installable
+          path: vanturax-forms-installable.zip
+          retention-days: 14
