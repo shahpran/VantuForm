@@ -7,6 +7,8 @@ import type {
   FormFieldSchema,
   FormSchemaData,
   FormStepSchema,
+  FormMultiStepConfig,
+  FormThemeConfig,
 } from '../types/schema';
 
 interface BuilderState {
@@ -115,9 +117,15 @@ function normalizeSchema(raw: FormSchemaData | undefined | null): FormSchemaData
     };
   }
 
-  const rawMultiStep =
-    raw.multi_step && typeof raw.multi_step === 'object' ? raw.multi_step : {};
-  const rawTheme = raw.theme && typeof raw.theme === 'object' ? raw.theme : {};
+  const rawMultiStep: Partial<FormMultiStepConfig> =
+  raw.multi_step && typeof raw.multi_step === 'object'
+    ? raw.multi_step
+    : {};
+
+const rawTheme: Partial<FormThemeConfig> =
+  raw.theme && typeof raw.theme === 'object'
+    ? raw.theme
+    : {};
   const hasSteps = Array.isArray(raw.steps) && raw.steps.length > 0;
 
   return {
