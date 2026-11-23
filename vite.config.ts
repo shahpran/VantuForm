@@ -15,6 +15,7 @@ function wordpressExternalsPlugin(): Plugin {
     react: `
       const el = (window.wp && window.wp.element) || {};
       export const createElement = el.createElement;
+      export const cloneElement = el.cloneElement;
       export const Fragment = el.Fragment;
       export const useState = el.useState;
       export const useEffect = el.useEffect;
