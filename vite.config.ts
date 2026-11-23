@@ -87,11 +87,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [wordpressExternalsPlugin()],
-    esbuild: {
-      jsxFactory: 'createElement',
-      jsxFragment: 'Fragment',
-      jsxInject: `import { createElement, Fragment } from 'react';`,
-    },
     build: {
       outDir: resolve(__dirname, 'assets/build'),
       emptyOutDir: true,
