@@ -1,0 +1,18 @@
+{
+  "name": "vanturax/vanturax-forms",
+  "description": "High-performance, modular WordPress Form Builder plugin by Vanturax.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "VanturaxForms\\": "src/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
