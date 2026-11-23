@@ -49,6 +49,7 @@ function wordpressExternalsPlugin(): Plugin {
       export const findDOMNode = el.findDOMNode;
       export const createPortal = el.createPortal;
       export const flushSync = el.flushSync;
+      export const unstable_batchedUpdates = el.unstable_batchedUpdates;
       export default el;
     `,
     'react-dom/client': `
